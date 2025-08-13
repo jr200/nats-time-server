@@ -1,0 +1,33 @@
+services:
+  nats-time-server:
+    image: ghcr.io/jr200/nats-time-server:local
+    restart: unless-stopped
+    user: root
+    volumes:
+    - ./charts/nats-time-server/files/config.yaml:/config.yaml:ro
+    - ./secrets/app.creds:/app/secrets/app.creds:ro
+    entrypoint:
+    # - sleep
+    # - 365d
+    networks:
+      - infra-private
+      - infra-public
+    command: >
+      -f /config.yaml
+    environment:
+      # These are set by the .env.local file
+      NATS_TIME_SERVER_NAME: ${NATS_TIME_SERVER_NAME}
+      NATS_URL: ${COMPOSE_NATS_URL}
+      NATS_USER_CREDENTIALS_FILE: ${NATS_USER_CREDENTIALS_FILE}
+      SERVICE_INSTANCE_ID: ${SERVICE_INSTANCE_ID}
+      APP_CLOCK_START_UTC: ${APP_CLOCK_START_UTC}
+      APP_CLOCK_INCREMENT: ${APP_CLOCK_INCREMENT}
+      APP_ALLOW_FUTURE_TIME: ${APP_ALLOW_FUTURE_TIME}
+      APP_TICK_FREQUENCY: ${APP_TICK_FREQUENCY}
+
+volumes: {}
+
+networks:
+  infra-private:
+  infra-public:
+    external: true
