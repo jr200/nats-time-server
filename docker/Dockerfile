@@ -41,5 +41,6 @@ USER app_user
 
 COPY --from=builder --chown=app_user:app_user /app/nats_time_server /app/nats_time_server
 COPY --from=builder --chown=app_user:app_user /app/.venv /app/.venv
+COPY --chown=app_user:app_user ./docker/docker-entrypoint.sh /docker-entrypoint.sh
 
-ENTRYPOINT ["python", "-m", "nats_time_server.start_api"]
+ENTRYPOINT /docker-entrypoint.sh

@@ -31,7 +31,7 @@ check:
 
 build:
 	podman build \
-		-f Dockerfile \
+		-f docker/Dockerfile \
 		-t ${DOCKER_IMAGE}:${DOCKER_TAG} \
 		--build-arg POETRY_VERSION=${POETRY_VERSION} \
 		--layers=true \
