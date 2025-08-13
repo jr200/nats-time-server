@@ -1,0 +1,20 @@
+nats:
+  servers:
+    - nats://127.0.0.1:4222
+  options:
+    name: nats-time-server-local-1
+    user_credentials: secrets/app.creds
+    verbose: true
+    max_outstanding_pings: 5
+    ping_interval: 5
+    connect_timeout: 2
+    # pedantic: true
+
+service:
+  instance_id: dev01
+
+app:
+  clock_start_utc: 2025-07-24T01:20:00Z
+  clock_increment: 5s
+  allow_future_time: true
+  tick_frequency: 5s

@@ -1,0 +1,35 @@
+[project]
+name = "nats-time-server"
+version = "0.0.1"
+description = ""
+authors = [
+    {name = "jr200", email = "jayshan+git@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12,<4.0"
+
+dependencies = [
+    "nats-py (>=2.11.0,<3.0.0)",
+    "nkeys (>=0.2.1,<0.3.0)",
+    "polars (>=1.30.0,<2.0.0)",
+    "pyyaml (>=6.0.2,<7.0.0)",
+    "python-dateutil (>=2.9.0.post0,<3.0.0)",
+    "pyapi-service-kit (>=0.0.3)",
+]
+
+
+[tool.poetry]
+packages = [{include = "nats_time_server", from = "src"}]
+
+[tool.poetry.scripts]
+start_api = "nats_time_server.start_api:main"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.11.13"
+mypy = "^1.16.0"
+types-pyyaml = "^6.0.12.20250516"
+types-pytz = "^2025.2.0.20250516"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
