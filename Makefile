@@ -5,6 +5,9 @@ DOCKER_IMAGE := ghcr.io/jr200/nats-time-server
 DOCKER_TAG := local
 POETRY_VERSION := 2.1.4
 
+K8S_NAMESPACE ?= nats-time-server
+CHART_NAME ?= nats-time-server
+
 all:
 	/bin/sh -lc '\
 	  set -euo pipefail; \
@@ -49,3 +52,14 @@ up:
 
 down:
 	podman compose --env-file .env.local -f compose-time-server.yaml -p ${TEAM_NAME} down || echo "No running containers"
+
+
+chart-secrets:
+	kubectl create namespace ${K8S_NAMESPACE} || echo "OK"
+	kubectl create configmap -n ${K8S_NAMESPACE} ${CHART_NAME}-env \
+	  --from-env-file=.env.local.k8s || echo "OK"
+	kubectl create secret generic -n ${K8S_NAMESPACE} ${CHART_NAME}-creds \
+	  --from-file=secrets/app.creds || echo "OK"
+
+chart-install: chart-secrets
+	helm upgrade --install -n ${K8S_NAMESPACE} ${CHART_NAME} charts/nats-time-server

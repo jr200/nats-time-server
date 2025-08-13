@@ -39,7 +39,7 @@ build/
 dist/
 
 *.tgz
-.env.local
+.env.local*
 .venv
 
 __pycache__
