@@ -4,10 +4,12 @@ from importlib.resources import files
 from typing import List
 
 from .config import Config
+from pyapi_service_kit.nats import make_nats_client
 from pyapi_service_kit.service import mark_service_ready, unmark_service_ready
-from pyapi_service_kit.utils import create_stop_event, initialise_logging, parse_args
-from pyapi_service_kit.nats import (
-    make_nats_client,
+from pyapi_service_kit.utils import (
+    create_stop_event,
+    initialise_logging,
+    parse_args,
 )
 from .register_tasks import register_tasks
 
