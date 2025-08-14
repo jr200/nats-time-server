@@ -52,7 +52,7 @@ jobs:
         uses: peter-evans/repository-dispatch@v3
         if: github.event_name != 'workflow_dispatch'
         with:
-          # event-type: dispatch-build-helm-chart
-          event-type: dispatch-publish-release
+          event-type: dispatch-build-helm-chart
+          # event-type: dispatch-publish-release
           token: ${{ secrets.GITHUB_TOKEN }}
           client-payload: ${{ toJson(github.event.client_payload) }}
