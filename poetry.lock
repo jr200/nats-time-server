@@ -502,14 +502,14 @@ sqlachemy = ["polars[sqlachemy] (>=1.32.2,<2.0.0)"]
 
 [[package]]
 name = "pyapi-service-kit"
-version = "0.0.3"
+version = "0.0.5"
 description = "some utiltiies used by backend python services"
 optional = false
 python-versions = "<4.0,>=3.12"
 groups = ["main"]
 files = [
-    {file = "pyapi_service_kit-0.0.3-py3-none-any.whl", hash = "sha256:3e8cfcc3c046b10b70f8b65e7740b5fc08f99dba09405df8e469e2bcc1538eb5"},
-    {file = "pyapi_service_kit-0.0.3.tar.gz", hash = "sha256:335c7b2be78cde25caa076bd59f9a5faf2fd0c5878b3dd31d59da62d70b577dc"},
+    {file = "pyapi_service_kit-0.0.5-py3-none-any.whl", hash = "sha256:c13f5d8d0f3ca1e10197c0d2ff3f884658abc0dcb0754d46a7a5cbbdc3401ee5"},
+    {file = "pyapi_service_kit-0.0.5.tar.gz", hash = "sha256:56d261619d6730a8ac758827f3d93ec3b542f57640d1f4db36cb29ba714ce080"},
 ]
 
 [package.dependencies]
@@ -958,4 +958,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4.0"
-content-hash = "c8bc9890ac755783f8ade016772bfefab9720c33f798aa9136babb82732ffa14"
+content-hash = "e17f799f16f620b8c0186cb1b3f3cf38d5898b75f98abb620ae5528248ea35ad"

@@ -1,6 +1,6 @@
 # nats-time-server
 
-Publishes a calculated UTC time to a NATS subject at a configurable cadence.
+Publishes UTC time to a NATS subject at some cadence.
 
 ### Features
 - **Tick speed**: run time faster/slower via `clock_increment`

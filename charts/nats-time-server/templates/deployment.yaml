@@ -38,14 +38,16 @@ spec:
           {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- with .Values.livenessProbe }}
           livenessProbe:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.readinessProbe }}
+            exec:
+              command: ["/bin/sh", "-c", "test -f ${HEALTH_READY_FILE:-/tmp/ready}"]
+            initialDelaySeconds: 5
+            periodSeconds: 10
           readinessProbe:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
+            exec:
+              command: ["/bin/sh", "-c", "test -f ${HEALTH_READY_FILE:-/tmp/ready}"]
+            initialDelaySeconds: 2
+            periodSeconds: 5
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
@@ -53,6 +55,9 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ template "nats-time-server.fullname" . }}-env
+          env:
+            - name: HEALTH_READY_FILE
+              value: "/tmp/nats-time-server-ready"
           volumeMounts:
             - name: nats-creds
               mountPath: /secrets

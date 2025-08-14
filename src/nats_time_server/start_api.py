@@ -1,9 +1,10 @@
 import asyncio
 import logging
-from typing import List
 from importlib.resources import files
+from typing import List
 
 from .config import Config
+from pyapi_service_kit.service import mark_service_ready, unmark_service_ready
 from pyapi_service_kit.utils import create_stop_event, initialise_logging, parse_args
 from pyapi_service_kit.nats import (
     make_nats_client,
@@ -23,6 +24,8 @@ async def _start_server() -> None:
         nc, _ = await make_nats_client(config.nats_config)
 
         await register_tasks(nc, tasks)
+
+        mark_service_ready()
 
         # Loop until the stop event is set
         stop = create_stop_event()
@@ -46,6 +49,7 @@ async def _start_server() -> None:
         LOGGER.info("\nShutting down gracefully...")
         if nc:
             await nc.close()
+        unmark_service_ready()
 
 
 def main():
