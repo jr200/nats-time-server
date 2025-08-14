@@ -23,7 +23,7 @@ RUN curl -sSL https://install.python-poetry.org | python3 - --version ${POETRY_V
 
 COPY --chown=app_user:app_user pyproject.toml poetry.lock* ./
 
-RUN poetry install --only main --no-root --compile -vvvv
+RUN POETRY_REQUESTS_TIMEOUT=120 && poetry install --only main --no-root --compile -vvvv
 
 COPY --chown=app_user:app_user ./src/nats_time_server /app/nats_time_server
 
