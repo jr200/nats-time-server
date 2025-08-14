@@ -7,7 +7,11 @@ WORKDIR /app
 
 ENV POETRY_VIRTUALENVS_CREATE=true \
     POETRY_VIRTUALENVS_IN_PROJECT=true \
+    POETRY_VIRTUALENVS_USE_POETRY_PYTHON=true \
     POETRY_NO_INTERACTION=1 \
+    POETRY_REQUESTS_TIMEOUT=240 \
+    POETRY_REQUESTS_MAX_RETRIES=3 \
+    PIP_DEFAULT_TIMEOUT=240 \
     XDG_CACHE_HOME=/app/.cache \
     PATH="/app/.venv/bin:/app/.local/bin:$PATH" \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -23,7 +27,7 @@ RUN curl -sSL https://install.python-poetry.org | python3 - --version ${POETRY_V
 
 COPY --chown=app_user:app_user pyproject.toml poetry.lock* ./
 
-RUN POETRY_REQUESTS_TIMEOUT=120 && poetry install --only main --no-root --compile -vvvv
+RUN poetry install --only main --no-root -vvvv
 
 COPY --chown=app_user:app_user ./src/nats_time_server /app/nats_time_server
 
