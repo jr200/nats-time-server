@@ -22,8 +22,8 @@ USER app_user
 RUN curl -sSL https://install.python-poetry.org | python3 - --version ${POETRY_VERSION}
 
 COPY --chown=app_user:app_user pyproject.toml poetry.lock* ./
-# Install only runtime deps (exclude dev group)
-RUN poetry install --only main --no-root --no-ansi
+
+RUN poetry install --only main --no-root --compile -vvvv
 
 COPY --chown=app_user:app_user ./src/nats_time_server /app/nats_time_server
 

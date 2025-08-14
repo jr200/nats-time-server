@@ -60,19 +60,6 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-# This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
-# livenessProbe:
-#   exec:
-#     command: ["/bin/sh", "-c", "test -f ${HEALTH_READY_FILE:-/tmp/ready}"]
-#   initialDelaySeconds: 5
-#   periodSeconds: 10
-# readinessProbe:
-#   exec:
-#     command: ["/bin/sh", "-c", "test -f ${HEALTH_READY_FILE:-/tmp/ready}"]
-#   initialDelaySeconds: 2
-#   periodSeconds: 5
-
-
 # Additional volumes on the output Deployment definition.
 volumes: []
 # - name: foo
