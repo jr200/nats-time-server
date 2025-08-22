@@ -3,7 +3,6 @@ import logging
 from importlib.resources import files
 from typing import List
 
-from .config import Config
 from pyapi_service_kit.nats import make_nats_client
 from pyapi_service_kit.service import mark_service_ready, unmark_service_ready
 from pyapi_service_kit.utils import (
@@ -11,6 +10,8 @@ from pyapi_service_kit.utils import (
     initialise_logging,
     parse_args,
 )
+
+from .config import Config
 from .register_tasks import register_tasks
 
 LOGGER = logging.getLogger(__name__)
@@ -23,15 +24,16 @@ async def _start_server() -> None:
     nc = None
 
     try:
-        nc, _ = await make_nats_client(config.nats_config)
+        nc, _ = await make_nats_client(
+            config.nats_config.servers, config.nats_config.options
+        )
 
         await register_tasks(nc, tasks)
-
-        mark_service_ready()
 
         # Loop until the stop event is set
         stop = create_stop_event()
         LOGGER.info("Server started...")
+        mark_service_ready()
         await stop
 
         # Clean up all tasks

@@ -1,5 +1,7 @@
 include .env.local
-ENV := $(shell cat .env.local)
+define RUN_WITH_ENV
+/bin/sh -lc 'set -euo pipefail; set -a; . $(1); set +a; $(2)'
+endef
 
 DOCKER_IMAGE := ghcr.io/jr200/nats-time-server
 DOCKER_TAG := local
@@ -9,13 +11,7 @@ K8S_NAMESPACE ?= nats-time-server
 CHART_NAME ?= nats-time-server
 
 all:
-	/bin/sh -lc '\
-	  set -euo pipefail; \
-	  set -a; \
-	  . .env.local; \
-	  set +a; \
-	  start_api \
-	'
+	$(call RUN_WITH_ENV, .env.local, start_api)
 
 install:
 	pip uninstall -y pyapi_service_kit
@@ -25,7 +21,8 @@ install:
 
 local-creds:
 	@mkdir -p secrets
-	$(shell /bin/bash -c "$(ENV) $$(curl -fsSL https://raw.githubusercontent.com/jr200/nats-infra/main/scripts/nats-create-account.sh) > secrets/app.creds")
+	nats context select ${NATS_SYSTEM_CONTEXT}
+	$(call RUN_WITH_ENV, .env.local, curl -fsSL https://raw.githubusercontent.com/jr200/nats-infra/main/scripts/nats-create-account.sh | /bin/bash -s -- > secrets/app.creds)
 
 check:
 	ruff check --fix

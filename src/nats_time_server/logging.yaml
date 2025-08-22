@@ -13,7 +13,6 @@ handlers:
 loggers:
   nats_time_server:
     level: INFO
-
   pyapi_service_kit:
     level: INFO
 

@@ -10,7 +10,8 @@
             "request": "launch",
             "module": "nats_time_server.start_api",
             "console": "integratedTerminal",
-            "justMyCode": false
+            "justMyCode": false,
+            "envFile": "${workspaceFolder}/.env.local"
         }
     ]
 }
