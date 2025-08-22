@@ -4,6 +4,8 @@ from typing import Any, Dict, Mapping, ClassVar
 from polars_hist_db.config.helpers import load_yaml, get_nested_key
 import pytz
 
+from pyapi_service_kit.nats import NatsConfig
+
 
 @dataclass
 class ServiceConfig:
@@ -23,6 +25,8 @@ class AppConfig:
     _started_time_utc: datetime = field(
         default_factory=lambda: datetime.now(pytz.timezone("UTC"))
     )
+    publish_epoch_ms: bool = True
+    publish_iso8601_time: bool = False
 
     def now_utc(self) -> datetime:
         now_utc = datetime.now(pytz.timezone("UTC"))
@@ -69,6 +73,8 @@ class AppConfig:
             raise TypeError("duration must be timedelta or string with unit (ms|s|m|h)")
 
         return cls(
+            publish_epoch_ms=bool(data.get("publish_epoch_ms", True)),
+            publish_iso8601_time=bool(data.get("publish_iso8601_time", False)),
             clock_start_utc=_parse_utc(data["clock_start_utc"]),
             clock_increment=_parse_duration(data["clock_increment"]),
             tick_frequency=_parse_duration(data["tick_frequency"]),
@@ -81,7 +87,7 @@ class Config:
     _borg: ClassVar[Dict[str, Any]] = {}
 
     # for auto-complete
-    nats_config: Dict[str, Any]
+    nats_config: NatsConfig
     service_config: ServiceConfig
     app_config: AppConfig
 
@@ -98,7 +104,8 @@ class Config:
     ) -> "Config":
         yaml_doc: Mapping[str, Any] = load_yaml(filename)
 
-        nats_config = get_nested_key(yaml_doc, nats_config_path.split("."))
+        raw_nats_config = get_nested_key(yaml_doc, nats_config_path.split("."))
+        nats_config = NatsConfig.from_dict(raw_nats_config)
 
         raw_service_config = get_nested_key(yaml_doc, service_config_path.split("."))
         service_config = ServiceConfig.from_dict(raw_service_config)

@@ -1,0 +1,36 @@
+applicationName: nats-time-server
+
+service:
+  enabled: false
+
+deployment:
+  enabled: true
+  image:
+    repository: ghcr.io/jr200/nats-time-server
+    tag: latest
+    pullPolicy: Always
+  imagePullSecrets: []
+  envFrom:
+    - secretRef:
+        name: nats-time-server-env
+        optional: false
+  volumes:
+    - name: nats-user-credentials-vol
+      secret:
+        secretName: nats-user-credentials
+    - emptyDir: {}
+      name: tmp
+  volumeMounts:
+    - mountPath: /tmp
+      name: tmp
+    - name: nats-user-credentials-vol
+      mountPath: /secrets/app.creds
+      subPath: app.creds
+      readOnly: true
+  containerSecurityContext:
+    runAsUser: 1000
+  envFrom:
+    nats-wgdbu-secrets:
+      type: secret
+      nameSuffix: env
+
