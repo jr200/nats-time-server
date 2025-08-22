@@ -22,7 +22,6 @@ jobs:
               "sha": "${{ github.sha }}",
               "tag": "${{ env.TAG }}",
               "checkout-ref": "${{ env.TAG }}",
-              "chart_repo": "jr200/helm-charts",
               "chart_dir": "charts",
               "platforms": ""
             }
